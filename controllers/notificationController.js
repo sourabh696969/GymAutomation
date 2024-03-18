@@ -130,6 +130,19 @@ const deleteSingleNotificationOfGym = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Notification deleted successfully!" });
 });
 
+const deleteUnreadNotificationGym = asyncHandler(async (req, res) => {
+  const deleteNotification = await AdminNotification.deleteMany({
+    status: true,
+  });
+
+  if (!deleteNotification) {
+    res.status(404);
+    throw new Error("Notification not found!");
+  }
+
+  res.status(200).json({ message: "Notification deleted successfully!" });
+});
+
 module.exports = {
   createNotificationForGym,
   createNotificationForAllGyms,
@@ -137,5 +150,6 @@ module.exports = {
   getUnreadNotificationOfGyms,
   getSingleNotificationOfGym,
   updateNotificationStatusOfGym,
-  deleteSingleNotificationOfGym
+  deleteSingleNotificationOfGym,
+  deleteUnreadNotificationGym
 };
