@@ -42,6 +42,13 @@ const gymSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Plan",
   },
+  planUpdatedOn: {
+    type: Date,
+    default: Date.now,
+  },
+},
+{
+  timestamps: true
 });
 
 module.exports = mongoose.model("Gym", gymSchema);

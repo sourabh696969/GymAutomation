@@ -16,7 +16,6 @@ const registerGym = asyncHandler(async (req, res) => {
     pincode,
     memberInGym,
     paymentMode,
-    plan,
   } = req.body;
 
   if (
@@ -30,8 +29,7 @@ const registerGym = asyncHandler(async (req, res) => {
     !city,
     !pincode,
     !memberInGym,
-    !paymentMode,
-    !plan)
+    !paymentMode)
   ) {
     res.status(404);
     throw new Error("All fields Required!");
@@ -54,7 +52,6 @@ const registerGym = asyncHandler(async (req, res) => {
     image,
     memberInGym,
     paymentMode,
-    plan,
   });
 
   res.status(201).json({ message: "Gym registered successfully!", gym });
@@ -81,7 +78,6 @@ const updateGym = asyncHandler(async (req, res) => {
     pincode,
     memberInGym,
     paymentMode,
-    plan,
   } = req.body;
 
   if (
@@ -94,8 +90,7 @@ const updateGym = asyncHandler(async (req, res) => {
     !city,
     !pincode,
     !memberInGym,
-    !paymentMode,
-    !plan)
+    !paymentMode)
   ) {
     res.status(404);
     throw new Error("All fields Required!");
@@ -115,7 +110,24 @@ const updateGym = asyncHandler(async (req, res) => {
     image: image == null ? gymImage.image : image,
     memberInGym,
     paymentMode,
+  });
+
+  res.status(200).json({ message: "Gym updated successfully!" });
+});
+
+const updateGymPlan = asyncHandler(async (req, res) => {
+  const gymId = req.params.id;
+  const { plan } = req.body;
+
+  if (!plan) {
+    res.status(404);
+    throw new Error("All fields Required!");
+  }
+  planUpdatedOn = new Date();
+
+  const gym = await Gym.findByIdAndUpdate(gymId, {
     plan,
+    planUpdatedOn,
   });
 
   res.status(200).json({ message: "Gym updated successfully!" });
@@ -226,6 +238,7 @@ module.exports = {
   loginGym,
   forgotPasswordGym,
   updateGym,
+  updateGymPlan,
   getAllGyms,
   getSingleGym,
   deleteGym,
