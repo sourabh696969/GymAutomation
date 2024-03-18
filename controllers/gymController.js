@@ -176,7 +176,7 @@ const forgotPasswordGym = asyncHandler(async (req, res) => {
 
   if (!gymAvailable) {
     res.status(404);
-    throw new Error("Admin not found!");
+    throw new Error("Gym not found!");
   }
 
   if (!(await bcrypt.compare(password, gymAvailable.password))) {
@@ -187,7 +187,7 @@ const forgotPasswordGym = asyncHandler(async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   if (email == gymAvailable.email) {
-    const newPassword = await Admin.updateOne({
+    const newPassword = await Gym.updateOne({
       password: hashedPassword,
     });
   }
