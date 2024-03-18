@@ -12,7 +12,7 @@ const checkPlanExpiration = asyncHandler(async (req, res, next) => {
 
     const planDurationInDays = gym.plan.duration * 30;
 
-    const expirationTime = new Date(gym.lastLogin);
+    const expirationTime = new Date(gym.planUpdatedOn);
     expirationTime.setDate(expirationTime.getDate() + planDurationInDays);
 
     if (new Date() > expirationTime) {

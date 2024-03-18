@@ -117,17 +117,31 @@ const updateGym = asyncHandler(async (req, res) => {
 
 const updateGymPlan = asyncHandler(async (req, res) => {
   const gymId = req.params.id;
-  const { plan } = req.body;
+  const { plan, status } = req.body;
 
-  if (!plan) {
+  if ((!plan, status === undefined || status === null || status === "")) {
     res.status(404);
     throw new Error("All fields Required!");
   }
+
   planUpdatedOn = new Date();
 
-  const gym = await Gym.findByIdAndUpdate(gymId, {
+  await Gym.findByIdAndUpdate(gymId, {
     plan,
     planUpdatedOn,
+    status,
+  });
+
+  const gym = await Gym.findById(gymId).populate("plan");
+
+  const planDurationInDays = gym.plan.duration * 30;
+
+  let ExpiryDate = planUpdatedOn.setDate(
+    planUpdatedOn.getDate() + planDurationInDays
+  );
+
+  await Gym.findByIdAndUpdate(gymId, {
+    ExpiryDate,
   });
 
   res.status(200).json({ message: "Gym updated successfully!" });
@@ -197,7 +211,9 @@ const forgotPasswordGym = asyncHandler(async (req, res) => {
 });
 
 const getAllGyms = asyncHandler(async (req, res) => {
-  const gyms = await Gym.find().select('-password');
+  const gyms = await Gym.find()
+    .select("-password")
+    .populate("plan", "name price");
 
   if (!gyms) {
     res.status(404);
@@ -210,7 +226,9 @@ const getAllGyms = asyncHandler(async (req, res) => {
 const getSingleGym = asyncHandler(async (req, res) => {
   const gymId = req.params.id;
 
-  const gym = await Gym.findById(gymId).select('-password');
+  const gym = await Gym.findById(gymId)
+    .select("-password")
+    .populate("plan", "name price");
 
   if (!gym) {
     res.status(404);
