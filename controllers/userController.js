@@ -137,7 +137,7 @@ const forgotPasswordUser = asyncHandler(async (req, res) => {
     throw new Error("User not found!");
   }
 
-  if ((await bcrypt.compare(password, userAvailable.password))) {
+  if (await bcrypt.compare(password, userAvailable.password)) {
     res.status(403);
     throw new Error("Please enter new password!");
   }
@@ -156,7 +156,9 @@ const forgotPasswordUser = asyncHandler(async (req, res) => {
 
 const getAllUsers = asyncHandler(async (req, res) => {
   const gymId = req.user;
-  const users = await User.find({ gymData: gymId }).select("-password");
+  const users = await User.find({ gymData: gymId })
+    .select("-password")
+    .populate("gymData", "gymName ownerName");
 
   if (!users) {
     res.status(404);
@@ -165,6 +167,20 @@ const getAllUsers = asyncHandler(async (req, res) => {
 
   res.status(200).json(users);
 });
+
+const getAllUsersForAdmin = asyncHandler(async (req, res) => {
+    const gymId = req.params.id;
+    const users = await User.find({ gymData: gymId })
+      .select("-password")
+      .populate("gymData", "gymName ownerName");
+  
+    if (!users) {
+      res.status(404);
+      throw new Error("User Not Found!");
+    }
+  
+    res.status(200).json(users);
+  });
 
 const getSingleUser = asyncHandler(async (req, res) => {
   const userId = req.params.id;
@@ -198,6 +214,7 @@ module.exports = {
   forgotPasswordUser,
   updateUser,
   getAllUsers,
+  getAllUsersForAdmin,
   getSingleUser,
   deleteUser,
 };
