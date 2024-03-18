@@ -169,18 +169,31 @@ const getAllUsers = asyncHandler(async (req, res) => {
 });
 
 const getAllUsersForAdmin = asyncHandler(async (req, res) => {
-    const gymId = req.params.id;
-    const users = await User.find({ gymData: gymId })
-      .select("-password")
-      .populate("gymData", "gymName ownerName");
-  
-    if (!users) {
-      res.status(404);
-      throw new Error("User Not Found!");
-    }
-  
-    res.status(200).json(users);
-  });
+  const gymId = req.params.id;
+  const users = await User.find({ gymData: gymId })
+    .select("-password")
+    .populate("gymData", "gymName ownerName");
+
+  if (!users) {
+    res.status(404);
+    throw new Error("User Not Found!");
+  }
+
+  res.status(200).json(users);
+});
+
+const getTotalUsersForAdmin = asyncHandler(async (req, res) => {
+  const users = await User.find()
+    .select("-password")
+    .populate("gymData", "gymName ownerName");
+
+  if (!users) {
+    res.status(404);
+    throw new Error("User Not Found!");
+  }
+
+  res.status(200).json(users);
+});
 
 const getSingleUser = asyncHandler(async (req, res) => {
   const userId = req.params.id;
@@ -215,6 +228,7 @@ module.exports = {
   updateUser,
   getAllUsers,
   getAllUsersForAdmin,
+  getTotalUsersForAdmin,
   getSingleUser,
   deleteUser,
 };
