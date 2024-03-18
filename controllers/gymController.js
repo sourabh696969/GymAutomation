@@ -197,7 +197,7 @@ const forgotPasswordGym = asyncHandler(async (req, res) => {
 });
 
 const getAllGyms = asyncHandler(async (req, res) => {
-  const gyms = await Gym.find();
+  const gyms = await Gym.find().select('-password');
 
   if (!gyms) {
     res.status(404);
@@ -210,7 +210,7 @@ const getAllGyms = asyncHandler(async (req, res) => {
 const getSingleGym = asyncHandler(async (req, res) => {
   const gymId = req.params.id;
 
-  const gym = await Gym.findById(gymId);
+  const gym = await Gym.findById(gymId).select('-password');
 
   if (!gym) {
     res.status(404);
