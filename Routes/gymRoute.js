@@ -20,7 +20,7 @@ router.post("/login", loginGym);
 router.put("/forgotPassword", forgotPasswordGym);
 router.put("/update/:id", uploadToCloudinary("image", 1), updateGym);
 router.put("/updatePlan/:id", updateGymPlan);
-router.get("/", validateUserToken, checkPlanExpiration, getAllGyms);
+router.get("/", getAllGyms);
 router.get("/:id", getSingleGym);
 router.delete("/:id", deleteGym);
 
