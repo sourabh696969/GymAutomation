@@ -80,8 +80,6 @@ const getUnreadNotificationOfGyms = asyncHandler(async (req, res) => {
 });
 
 const getNotificationOfGymsAdmin = asyncHandler(async (req, res) => {
-  const notificationStatus = req.params.status;
-
   const notificationData = await AdminNotification.find();
 
   if (!notificationData) {
