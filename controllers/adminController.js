@@ -1,5 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const Admin = require("../models/adminModel");
+const Gym = require("../models/gymModel");
+const User = require("../models/userModel");
+const { GymSupport } = require("../models/supportModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
@@ -97,8 +100,21 @@ const forgotPasswordAdmin = asyncHandler(async (req, res) => {
   });
 });
 
+const getLengthOfData = asyncHandler(async (req, res) => {
+  const totalUser = await User.find().count();
+  const totalGym = await Gym.find().count();
+  const totalGymSupport = await GymSupport.find().count();
+
+  res.status(200).json({
+    UserCount: totalUser,
+    GymCount: totalGym,
+    GymSupportCount: totalGymSupport,
+  });
+});
+
 module.exports = {
   registerAdmin,
   loginAdmin,
   forgotPasswordAdmin,
+  getLengthOfData
 };
