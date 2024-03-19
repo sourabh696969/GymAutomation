@@ -8,6 +8,7 @@ const {
   getSingleNotificationOfGym,
   deleteSingleNotificationOfGym,
   deleteUnreadNotificationGym,
+  getNotificationOfGymsAdmin,
 } = require("../controllers/notificationController");
 
 const router = express.Router();
@@ -18,6 +19,7 @@ router.patch("/gym/update/:id", updateNotificationStatusOfGym);
 router.get("/gym/unread/:id", getUnreadNotificationOfGyms);
 router.get("/gym/read/:id", getReadNotificationOfGyms);
 router.get("/gym/single/:id", getSingleNotificationOfGym);
+router.get("/gym/all", getNotificationOfGymsAdmin);
 router.delete("/gym/delete/:id", deleteSingleNotificationOfGym);
 router.delete("/gym/delete/unread", deleteUnreadNotificationGym);
 

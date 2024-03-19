@@ -79,6 +79,21 @@ const getUnreadNotificationOfGyms = asyncHandler(async (req, res) => {
     .json({ totalNotification: notificationData.length, notificationData });
 });
 
+const getNotificationOfGymsAdmin = asyncHandler(async (req, res) => {
+  const notificationStatus = req.params.status;
+
+  const notificationData = await AdminNotification.find();
+
+  if (!notificationData) {
+    res.status(404);
+    throw new Error("data not found!");
+  }
+
+  res
+    .status(200)
+    .json({ totalNotification: notificationData.length, notificationData });
+});
+
 const getSingleNotificationOfGym = asyncHandler(async (req, res) => {
   const notificationId = req.params.id;
 
@@ -149,7 +164,8 @@ module.exports = {
   getReadNotificationOfGyms,
   getUnreadNotificationOfGyms,
   getSingleNotificationOfGym,
+  getNotificationOfGymsAdmin,
   updateNotificationStatusOfGym,
   deleteSingleNotificationOfGym,
-  deleteUnreadNotificationGym
+  deleteUnreadNotificationGym,
 };
