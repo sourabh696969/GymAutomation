@@ -16,6 +16,9 @@ const checkPlanExpiration = asyncHandler(async (req, res, next) => {
   expirationTime.setDate(expirationTime.getDate() + planDurationInDays);
 
   if (new Date() > expirationTime) {
+    await Gym.findByIdAndUpdate(gymId, {
+      status: false,
+    });
     res.status(401);
     throw new Error(
       "Plan has expired. Please update your subscription for access."

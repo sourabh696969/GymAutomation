@@ -139,6 +139,14 @@ const updateGymPlan = asyncHandler(async (req, res) => {
     planUpdatedOn.getDate() + planDurationInDays
   );
 
+  if (status == false) {
+    await Gym.findByIdAndUpdate(gymId, {
+      ExpiryDate: planUpdatedOn,
+      plan: null,
+    });
+    res.status(200).json({ message: "Gym updated successfully!" });
+  }
+
   await Gym.findByIdAndUpdate(gymId, {
     ExpiryDate,
   });

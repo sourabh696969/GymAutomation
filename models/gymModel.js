@@ -48,7 +48,7 @@ const gymSchema = mongoose.Schema({
   },
   status: {
     type: Boolean,
-    default: false
+    default: true
   },
   ExpiryDate: {
     type: Date,
