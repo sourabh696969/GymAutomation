@@ -114,11 +114,7 @@ const updateGymPlan = asyncHandler(async (req, res) => {
   const gymId = req.params.id;
   const { plan, status, paymentMode } = req.body;
 
-  if (
-    (!plan,
-    !paymentMode,
-    status === undefined || status === null || status === "")
-  ) {
+  if (status === undefined || status === null || status === "") {
     res.status(404);
     throw new Error("All fields Required!");
   }
