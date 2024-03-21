@@ -13,7 +13,7 @@ const uploadToCloudinary = (folderName, count) => {
     cloudinary: cloudinary,
     params: {
       folder: folderName,
-      allowed_formats: ["jpg", "jpeg", "png", "gif"],
+      allowed_formats: ["jpg", "jpeg", "png", "gif", "pdf"],
       quality: 80,
     },
   });

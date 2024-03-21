@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Gym = require("../models/gymModel");
 const User = require("../models/userModel");
+const { Notification } = require("../models/notificationModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
