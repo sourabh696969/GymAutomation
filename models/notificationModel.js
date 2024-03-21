@@ -1,5 +1,20 @@
 const mongoose = require("mongoose");
 
+const notificationSchema = mongoose.Schema(
+  {
+    notification: {
+      type: String,
+    },
+    status: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const adminNotificationSchema = mongoose.Schema(
   {
     title: {
@@ -22,11 +37,17 @@ const adminNotificationSchema = mongoose.Schema(
   }
 );
 
+const Notification = mongoose.model(
+  "Notification",
+  notificationSchema
+);
+
 const AdminNotification = mongoose.model(
   "AdminNotification",
   adminNotificationSchema
 );
 
 module.exports = {
+  Notification,
   AdminNotification,
 };

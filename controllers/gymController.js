@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Gym = require("../models/gymModel");
+const { Notification } = require("../models/notificationModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -53,6 +54,9 @@ const registerGym = asyncHandler(async (req, res) => {
   });
 
   res.status(201).json({ message: "Gym registered successfully!", gym });
+  await Notification.create({
+    notification: `${gymName} !! New Gym registered.`,
+  });
 });
 
 const updateGym = asyncHandler(async (req, res) => {

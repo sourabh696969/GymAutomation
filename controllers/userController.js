@@ -52,6 +52,9 @@ const registerUser = asyncHandler(async (req, res) => {
   });
 
   res.status(201).json({ message: "User registered successfully!", user });
+  await Notification.create({
+    notification: `${name} !! New User registered.`,
+  });
 });
 
 const updateUser = asyncHandler(async (req, res) => {

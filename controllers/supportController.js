@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const Gym = require("../models/gymModel");
 const { GymSupport } = require("../models/supportModel");
+const { Notification } = require("../models/notificationModel");
 
 const createSupportGym = asyncHandler(async (req, res) => {
   const { description } = req.body;
@@ -29,6 +30,9 @@ const createSupportGym = asyncHandler(async (req, res) => {
   }, 604800000);
 
   res.status(201).json({ message: "Support Created!", support });
+  await Notification.create({
+    notification: `${gymData.gymName} !! New Quary registered.`,
+  });
 });
 
 const updateSupportStatusOfGym = asyncHandler(async (req, res) => {

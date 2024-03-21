@@ -9,10 +9,23 @@ const {
   deleteSingleNotificationOfGym,
   deleteUnreadNotificationGym,
   getNotificationOfGymsAdmin,
+  updateNotificationStatus,
+  getUnreadNotification,
+  getReadNotification,
+  deleteNotificationById,
+  deleteUnreadNotification,
 } = require("../controllers/notificationController");
 
 const router = express.Router();
 
+///// Admin Notification Routes /////
+router.patch("/update/:id", updateNotificationStatus);
+router.get("/unread", getUnreadNotification);
+router.get("/read", getReadNotification);
+router.delete("/delete/:id", deleteNotificationById);
+router.delete("/unread", deleteUnreadNotification);
+
+///// Admin Notification Routes /////
 router.post("/gym/create", createNotificationForGym);
 router.post("/gym/createForAll", createNotificationForAllGyms);
 router.patch("/gym/update/:id", updateNotificationStatusOfGym);
