@@ -49,6 +49,7 @@ const registerGym = asyncHandler(async (req, res) => {
     pincode,
     image,
     memberInGym,
+    plan: "65f97be01eead1032ba42174",
   });
 
   res.status(201).json({ message: "Gym registered successfully!", gym });
