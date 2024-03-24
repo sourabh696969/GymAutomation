@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const {
   Notification,
   AdminNotification,
-} = require("../models/notificationModel");
+} = require("../models/adminNotificationModel");
 const Gym = require("../models/gymModel");
 
 ///// Notification Controllers for Admin /////

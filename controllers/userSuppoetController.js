@@ -1,41 +1,41 @@
 const asyncHandler = require("express-async-handler");
-const Gym = require("../models/gymModel");
-const { GymSupport } = require("../models/supportModel");
-const { Notification } = require("../models/adminNotificationModel");
+const User = require("../models/userModel");
+const { UserSupport } = require("../models/supportModel");
+const { Notification } = require("../models/subAdminNotificationModel");
 
-const createSupportGym = asyncHandler(async (req, res) => {
+const createSupportUser = asyncHandler(async (req, res) => {
   const { description } = req.body;
-  const gymId = req.user;
-  console.log(gymId);
+  const userId = req.user;
+  console.log(userId);
 
   if (!description) {
     res.status(404);
     throw new Error("All Fields required!");
   }
 
-  const gymData = await Gym.findById(gymId);
+  const userData = await User.findById(userId);
 
-  if (!gymData) {
+  if (!userData) {
     res.status(404);
-    throw new Error("Gym not found!");
+    throw new Error("User not found!");
   }
 
-  const support = await GymSupport.create({
+  const support = await UserSupport.create({
     description,
-    gymData: gymId,
+    userData: userId,
   });
 
   setTimeout(async () => {
-    await GymSupport.findByIdAndDelete(support._id);
+    await UserSupport.findByIdAndDelete(support._id);
   }, 604800000);
 
   res.status(201).json({ message: "Support Created!", support });
   await Notification.create({
-    notification: `${gymData.gymName} !! New Quary registered.`,
+    notification: `${userData.name} !! New Quary registered.`,
   });
 });
 
-const updateSupportStatusOfGym = asyncHandler(async (req, res) => {
+const updateSupportStatusOfUser = asyncHandler(async (req, res) => {
   const supportId = req.params.id;
   const { status } = req.body;
 
@@ -43,7 +43,7 @@ const updateSupportStatusOfGym = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("All fields required!");
   }
-  const updatesupport = await GymSupport.findByIdAndUpdate(supportId, {
+  const updatesupport = await UserSupport.findByIdAndUpdate(supportId, {
     status: status,
   });
 
@@ -55,28 +55,25 @@ const updateSupportStatusOfGym = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Support updated successfully!" });
 });
 
-const getGymSupport = asyncHandler(async (req, res) => {
+const getUserSupport = asyncHandler(async (req, res) => {
   const { page, limit, searchQuary } = req.query;
 
   const pages = Number(page) || 1;
   const limits = Number(limit) || 10;
   const skip = (pages - 1) * limits;
 
-  const supportData = await GymSupport.find({
+  const supportData = await UserSupport.find({
     $or: [
       {
-        gymData: {
-          $in: await Gym.find({
-            $or: [
-              { ownerName: { $regex: searchQuary, $options: "i" } },
-              { gymName: { $regex: searchQuary, $options: "i" } },
-            ],
+        userData: {
+          $in: await User.find({
+            $or: [{ name: { $regex: searchQuary, $options: "i" } }],
           }).distinct("_id"),
         },
       },
     ],
   })
-    .populate("gymData", "ownerName gymName phone")
+    .populate("userData", "name phone")
     .skip(skip)
     .limit(limits);
 
@@ -87,11 +84,11 @@ const getGymSupport = asyncHandler(async (req, res) => {
   res.status(200).json(supportData);
 });
 
-const getGymSupportById = asyncHandler(async (req, res) => {
+const getUserSupportById = asyncHandler(async (req, res) => {
   const supportId = req.params.id;
-  const supportData = await GymSupport.findById(supportId).populate(
-    "gymData",
-    "ownerName gymName phone"
+  const supportData = await UserSupport.findById(supportId).populate(
+    "userData",
+    "name phone"
   );
   if (!supportData) {
     res.status(404);
@@ -100,9 +97,9 @@ const getGymSupportById = asyncHandler(async (req, res) => {
   res.status(200).json(supportData);
 });
 
-const deleteGymSupport = asyncHandler(async (req, res) => {
+const deleteUserSupport = asyncHandler(async (req, res) => {
   const supportId = req.params.id;
-  const deletedSupport = await GymSupport.findByIdAndDelete(supportId);
+  const deletedSupport = await UserSupport.findByIdAndDelete(supportId);
   if (!deletedSupport) {
     res.status(404);
     throw new Error("data not found!");
@@ -111,9 +108,9 @@ const deleteGymSupport = asyncHandler(async (req, res) => {
 });
 
 module.exports = {
-  createSupportGym,
-  updateSupportStatusOfGym,
-  getGymSupport,
-  getGymSupportById,
-  deleteGymSupport,
+  createSupportUser,
+  updateSupportStatusOfUser,
+  getUserSupport,
+  getUserSupportById,
+  deleteUserSupport,
 };

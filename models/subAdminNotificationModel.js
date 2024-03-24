@@ -1,14 +1,9 @@
 const mongoose = require("mongoose");
 
-const gymSupportSchema = mongoose.Schema(
+const notificationSchema = mongoose.Schema(
   {
-    description: {
+    notification: {
       type: String,
-      required: true,
-    },
-    gymData: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Gym",
     },
     status: {
       type: Boolean,
@@ -20,13 +15,15 @@ const gymSupportSchema = mongoose.Schema(
   }
 );
 
-const userSupportSchema = mongoose.Schema(
+const subAdminNotificationSchema = mongoose.Schema(
   {
+    title: {
+      type: String,
+    },
     description: {
       type: String,
-      required: true,
     },
-    userData: {
+    userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
@@ -40,10 +37,17 @@ const userSupportSchema = mongoose.Schema(
   }
 );
 
-const GymSupport = mongoose.model("GymSupport", gymSupportSchema);
-const UserSupport = mongoose.model("UserSupport", userSupportSchema);
+const Notification = mongoose.model(
+  "GymNotification",
+  notificationSchema
+);
+
+const SubAdminNotification = mongoose.model(
+  "SubAdminNotification",
+  subAdminNotificationSchema
+);
 
 module.exports = {
-  GymSupport,
-  UserSupport,
+  Notification,
+  SubAdminNotification,
 };

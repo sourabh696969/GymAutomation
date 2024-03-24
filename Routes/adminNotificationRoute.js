@@ -14,7 +14,7 @@ const {
   getReadNotification,
   deleteNotificationById,
   deleteUnreadNotification,
-} = require("../controllers/notificationController");
+} = require("../controllers/adminNotificationController");
 
 const router = express.Router();
 
