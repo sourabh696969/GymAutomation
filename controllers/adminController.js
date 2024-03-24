@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Admin = require("../models/adminModel");
 const Gym = require("../models/gymModel");
 const User = require("../models/userModel");
-const Plan = require("../models/planModel");
+const { GymPlan } = require("../models/planModel");
 const { GymSupport } = require("../models/supportModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -105,7 +105,7 @@ const getLengthOfData = asyncHandler(async (req, res) => {
   const totalUser = await User.find().count();
   const totalGym = await Gym.find().count();
   const totalGymSupport = await GymSupport.find().count();
-  const totalGymPlan = await Plan.find().count();
+  const totalGymPlan = await GymPlan.find().count();
 
   res.status(200).json({
     UserCount: totalUser,

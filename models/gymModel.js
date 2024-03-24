@@ -40,7 +40,7 @@ const gymSchema = mongoose.Schema({
   },
   plan: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Plan",
+    ref: "GymPlan",
   },
   planUpdatedOn: {
     type: Date,

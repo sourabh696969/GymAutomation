@@ -25,7 +25,7 @@ router.get("/read", getReadNotification);
 router.delete("/delete/:id", deleteNotificationById);
 router.delete("/unread", deleteUnreadNotification);
 
-///// Admin Notification Routes /////
+///// Admin Notification To Gym Routes /////
 router.post("/gym/create", createNotificationForGym);
 router.post("/gym/createForAll", createNotificationForAllGyms);
 router.patch("/gym/update/:id", updateNotificationStatusOfGym);
